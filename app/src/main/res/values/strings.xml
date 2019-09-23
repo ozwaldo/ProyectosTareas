@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ProyectosTareas</string>
+    <string name="tarea_titulo_etiqueta">Escriba un título para la tarea.</string>
+    <string name="tarea_titulo_hint">Título</string>
+    <string name="tarea_detalle_etiqueta">Descripción:</string>
+    <string name="tarea_entregada_etiqueta">Entregada</string>
+</resources>
