@@ -25,6 +25,7 @@ public class TareaFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mTarea = new Tarea();
     }
     @Nullable
     @Override
@@ -57,7 +58,8 @@ public class TareaFragment extends Fragment {
 
         mFechaBoton = (Button)
                 view.findViewById(R.id.fecha_entrega_tarea);
-        mFechaBoton.setText(mTarea.getFecha().toString());
+       // mFechaBoton.setText(mTarea.getFecha().toString());
+        mFechaBoton.setText("Fecha de Entrega");
         mFechaBoton.setEnabled(false);
 
         mTareaEntregada = (CheckBox)
@@ -66,6 +68,8 @@ public class TareaFragment extends Fragment {
         mTareaEntregada.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+               // Log.d("DEPURAR", entregada + "");
                 mTarea.setEntregada(isChecked);
             }
         });

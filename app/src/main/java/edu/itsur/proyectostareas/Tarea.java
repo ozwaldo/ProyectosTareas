@@ -9,6 +9,10 @@ public class Tarea {
     private Date mFecha;
     private boolean mEntregada;
 
+    public Tarea() {
+        this.mId = UUID.randomUUID();
+    }
+
     public Tarea(Date fecha) {
         this.mId = UUID.randomUUID();
         this.mFecha = fecha;
