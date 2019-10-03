@@ -1,9 +1,11 @@
 package edu.itsur.proyectostareas;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.util.List;
 
 // android.support.v4.app.Fragment;
@@ -34,12 +37,16 @@ public class TareaListFragment extends Fragment {
                 findViewById(R.id.tarea_recycler_view);
         mTareasRecyclerView.setLayoutManager(new
                 LinearLayoutManager(getActivity()));
-
+        try {
+            updateIU();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
 
-    private void updateIU() {
+    private void updateIU() throws ParseException {
         TareaRep tareaRep = TareaRep.get(getActivity());
         List<Tarea> tareas = tareaRep.getTareas();
 
@@ -49,8 +56,35 @@ public class TareaListFragment extends Fragment {
 
     private class TareaHolder extends RecyclerView.ViewHolder {
 
+        private TextView mTituloTareaView;
+        private TextView mFechaTareaView;
+
+        private Tarea mTarea;
+
+        public TareaHolder(LayoutInflater inflater,
+                           ViewGroup parent){
+            super(inflater.inflate(R.layout.lista_item_tarea,
+                    parent, false));
+
+            mTituloTareaView = (TextView)
+                    itemView.findViewById(R.id.tarea_titulo);
+            mFechaTareaView = (TextView)
+                    itemView.findViewById(R.id.fecha_tarea);
+        }
+
         public TareaHolder(@NonNull View itemView) {
             super(itemView);
+
+            mTituloTareaView = (TextView)
+                    itemView.findViewById(R.id.tarea_titulo);
+            mFechaTareaView = (TextView)
+                    itemView.findViewById(R.id.fecha_tarea);
+        }
+        public void bind(Tarea tarea) {
+            mTarea = tarea;
+            Log.d("DEPURAR",mTarea.getTitulo());
+            mTituloTareaView.setText(mTarea.getTitulo());
+            //mFechaTareaView.setText(mTarea.getFecha().toString());
         }
     }
 
@@ -69,11 +103,13 @@ public class TareaListFragment extends Fragment {
             LayoutInflater layoutInflater =
                     LayoutInflater.from(getActivity());
 
-            return new TareaHolder(parent);
+            return new TareaHolder(layoutInflater, parent);
         }
         @Override
-        public void onBindViewHolder(@NonNull TareaHolder holder, int position) {
-
+        public void onBindViewHolder(@NonNull TareaHolder holder,
+                                     int position) {
+            Tarea tarea = mTareas.get(position);
+            holder.bind(tarea);
         }
         @Override
         public int getItemCount() {
