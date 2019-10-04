@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,22 +55,31 @@ public class TareaListFragment extends Fragment {
         mTareasRecyclerView.setAdapter(mAdapter);
     }
 
-    private class TareaHolder extends RecyclerView.ViewHolder {
+    private class TareaHolder
+            extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
 
         private TextView mTituloTareaView;
         private TextView mFechaTareaView;
-
         private Tarea mTarea;
-
         public TareaHolder(LayoutInflater inflater,
                            ViewGroup parent){
             super(inflater.inflate(R.layout.lista_item_tarea,
                     parent, false));
 
+            itemView.setOnClickListener(this);
+
             mTituloTareaView = (TextView)
                     itemView.findViewById(R.id.tarea_titulo);
             mFechaTareaView = (TextView)
                     itemView.findViewById(R.id.fecha_tarea);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(),
+                    mTarea.getTitulo(),
+                    Toast.LENGTH_SHORT).show();
         }
 
         public TareaHolder(@NonNull View itemView) {
@@ -84,7 +94,8 @@ public class TareaListFragment extends Fragment {
             mTarea = tarea;
             Log.d("DEPURAR",mTarea.getTitulo());
             mTituloTareaView.setText(mTarea.getTitulo());
-            //mFechaTareaView.setText(mTarea.getFecha().toString());
+            //mFechaTareaView.setText(mTarea.getFecha()
+            // .toString());
         }
     }
 
