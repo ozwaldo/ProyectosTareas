@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
+
+    <CheckBox
+        android:id="@+id/check_tarea_entregada_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="4dp"/>
 
     <TextView
         android:id="@+id/tarea_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/check_tarea_entregada_item"
+        android:textStyle="bold"
+        android:padding="4dp"
         android:text="Título tarea"
         android:textSize="20sp"/>
 
@@ -16,8 +26,10 @@
         android:id="@+id/fecha_tarea"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:layout_toLeftOf="@id/check_tarea_entregada_item"
+        android:layout_below="@+id/tarea_titulo"
+        android:padding="4dp"
         android:textSize="20sp"
         android:text="01 de Enero de 2019"/>
 
-</LinearLayout>
+</RelativeLayout>

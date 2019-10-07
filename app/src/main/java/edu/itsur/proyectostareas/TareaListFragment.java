@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,9 @@ public class TareaListFragment extends Fragment {
 
         private TextView mTituloTareaView;
         private TextView mFechaTareaView;
+        private CheckBox mTareaEntregada;
         private Tarea mTarea;
+
         public TareaHolder(LayoutInflater inflater,
                            ViewGroup parent){
             super(inflater.inflate(R.layout.lista_item_tarea,
@@ -73,6 +76,8 @@ public class TareaListFragment extends Fragment {
                     itemView.findViewById(R.id.tarea_titulo);
             mFechaTareaView = (TextView)
                     itemView.findViewById(R.id.fecha_tarea);
+            mTareaEntregada = (CheckBox)
+                    itemView.findViewById(R.id.check_tarea_entregada_item);
         }
 
         @Override
@@ -94,6 +99,7 @@ public class TareaListFragment extends Fragment {
             mTarea = tarea;
             Log.d("DEPURAR",mTarea.getTitulo());
             mTituloTareaView.setText(mTarea.getTitulo());
+            mTareaEntregada.setChecked(tarea.isEntregada());
             //mFechaTareaView.setText(mTarea.getFecha()
             // .toString());
         }
