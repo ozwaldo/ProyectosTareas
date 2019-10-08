@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.text.ParseException;
+import java.util.UUID;
+
 public class TareaFragment extends Fragment {
     private Tarea mTarea;
     private EditText mTituloTarea;
@@ -25,7 +28,19 @@ public class TareaFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTarea = new Tarea();
+//        mTarea = new Tarea();
+        UUID tareaId = (UUID)
+                getActivity().getIntent()
+                        .getSerializableExtra(
+                                MainActivity.EXTRA_TAREA_ID
+                        );
+        try {
+            mTarea =
+                    TareaRep.get(getActivity())
+                            .getTarea(tareaId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     @Nullable
     @Override
@@ -36,7 +51,7 @@ public class TareaFragment extends Fragment {
                 container,false);
         mTituloTarea = (EditText)
                 view.findViewById(R.id.tarea_titulo);
-
+        mTituloTarea.setText(mTarea.getTitulo());
         mTituloTarea.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
@@ -55,7 +70,6 @@ public class TareaFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
         mFechaBoton = (Button)
                 view.findViewById(R.id.fecha_entrega_tarea);
        // mFechaBoton.setText(mTarea.getFecha().toString());
@@ -64,11 +78,10 @@ public class TareaFragment extends Fragment {
 
         mTareaEntregada = (CheckBox)
                 view.findViewById(R.id.tarea_entregada);
-
+        mTareaEntregada.setChecked(mTarea.isEntregada());
         mTareaEntregada.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                // Log.d("DEPURAR", entregada + "");
                 mTarea.setEntregada(isChecked);
             }
