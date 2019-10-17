@@ -20,20 +20,36 @@ import java.text.ParseException;
 import java.util.UUID;
 
 public class TareaFragment extends Fragment {
+
+    private static final String ARG_TAREA_ID = "tarea_id";
+
     private Tarea mTarea;
     private EditText mTituloTarea;
     private Button mFechaBoton;
     private CheckBox mTareaEntregada;
 
+    public static TareaFragment newInstance(UUID tareaId){
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_TAREA_ID, tareaId);
+
+        TareaFragment fragment = new TareaFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        mTarea = new Tarea();
-        UUID tareaId = (UUID)
+        /*UUID tareaId = (UUID)
                 getActivity().getIntent()
                         .getSerializableExtra(
                                 MainActivity.EXTRA_TAREA_ID
-                        );
+                        );*/
+
+        UUID tareaId = (UUID) getArguments().
+                getSerializable(ARG_TAREA_ID);
+
         try {
             mTarea =
                     TareaRep.get(getActivity())
@@ -51,7 +67,9 @@ public class TareaFragment extends Fragment {
                 container,false);
         mTituloTarea = (EditText)
                 view.findViewById(R.id.tarea_titulo);
+
         mTituloTarea.setText(mTarea.getTitulo());
+
         mTituloTarea.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(

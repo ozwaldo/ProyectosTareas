@@ -9,22 +9,23 @@ import java.util.UUID;
 
 public class MainActivity extends SingleFragmentActivity {
 
-    public static final String EXTRA_TAREA_ID =
+    private static final String EXTRA_TAREA_ID =
             "edu.itsur.proyectostareas.tarea_id";
 
-    public static Intent newIntent(
-            Context context, UUID tareaId) {
-
+    public static Intent newIntent(Context context,
+                                   UUID tareaId) {
         Intent intent = new Intent(
                 context, MainActivity.class);
         intent.putExtra(EXTRA_TAREA_ID, tareaId);
         return intent;
-
     }
 
     @Override
     protected Fragment crearFragment() {
-        return new TareaFragment();
+        UUID tareaId = (UUID) getIntent()
+                .getSerializableExtra(EXTRA_TAREA_ID);
+        // return MainActivity.newIntent(tareaId);
+        return TareaFragment.newInstance(tareaId);
     }
 
 

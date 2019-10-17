@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,13 +48,29 @@ public class TareaListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            updateIU();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void updateIU() throws ParseException {
         TareaRep tareaRep = TareaRep.get(getActivity());
         List<Tarea> tareas = tareaRep.getTareas();
 
-        mAdapter = new TareaAdapter(tareas);
-        mTareasRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new TareaAdapter(tareas);
+            mTareasRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
     private class TareaHolder
@@ -78,6 +95,13 @@ public class TareaListFragment extends Fragment {
                     itemView.findViewById(R.id.fecha_tarea);
             mTareaEntregada = (CheckBox)
                     itemView.findViewById(R.id.check_tarea_entregada_item);
+
+            mTareaEntregada.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mTarea.setEntregada(isChecked);
+                }
+            });
         }
 
         @Override
@@ -85,9 +109,14 @@ public class TareaListFragment extends Fragment {
 
 //            Intent intent = new Intent(getActivity(),
 //                    MainActivity.class);
-            Intent intent = MainActivity.newIntent(
-                    getActivity(), mTarea.getId());
 
+//            Intent intent = MainActivity.newIntent(
+//                    getActivity(), mTarea.getId());
+
+            Intent intent = TareaPagerActivity.newIntent(
+                    getActivity(),
+                    mTarea.getId()
+            );
             startActivity(intent);
 
 //            Toast.makeText(getActivity(),
@@ -95,14 +124,7 @@ public class TareaListFragment extends Fragment {
 //                    Toast.LENGTH_SHORT).show();
         }
 
-        public TareaHolder(@NonNull View itemView) {
-            super(itemView);
 
-            mTituloTareaView = (TextView)
-                    itemView.findViewById(R.id.tarea_titulo);
-            mFechaTareaView = (TextView)
-                    itemView.findViewById(R.id.fecha_tarea);
-        }
         public void bind(Tarea tarea) {
             mTarea = tarea;
             Log.d("DEPURAR",mTarea.getTitulo());
