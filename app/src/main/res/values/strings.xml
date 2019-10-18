@@ -4,4 +4,5 @@
     <string name="tarea_titulo_hint">Título</string>
     <string name="tarea_detalle_etiqueta">Descripción:</string>
     <string name="tarea_entregada_etiqueta">Entregada</string>
+    <string name="date_picker_titulo">Fecha de Entrega</string>
 </resources>

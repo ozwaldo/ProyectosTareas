@@ -15,6 +15,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.text.ParseException;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class TareaFragment extends Fragment {
 
     private static final String ARG_TAREA_ID = "tarea_id";
+    private static final String DIALOG_FECHA = "DialogFecha";
 
     private Tarea mTarea;
     private EditText mTituloTarea;
@@ -92,7 +94,19 @@ public class TareaFragment extends Fragment {
                 view.findViewById(R.id.fecha_entrega_tarea);
        // mFechaBoton.setText(mTarea.getFecha().toString());
         mFechaBoton.setText("Fecha de Entrega");
-        mFechaBoton.setEnabled(false);
+        //mFechaBoton.setEnabled(false);
+
+        mFechaBoton.setOnClickListener(
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager =
+                        getFragmentManager();
+                DatePickerFragment dialog =
+                        new DatePickerFragment();
+                dialog.show(manager, DIALOG_FECHA);
+            }
+        });
 
         mTareaEntregada = (CheckBox)
                 view.findViewById(R.id.tarea_entregada);
