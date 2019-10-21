@@ -5,12 +5,28 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.Date;
+
 public class DatePickerFragment extends DialogFragment {
+
+    private static final String ARG_FECHA = "fecha";
+    private DatePicker mDatePicker;
+
+    public static DatePickerFragment newInstance(Date fecha){
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_FECHA, fecha);
+        DatePickerFragment fragment = new DatePickerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @NonNull
     @Override
     public Dialog onCreateDialog(
@@ -26,4 +42,7 @@ public class DatePickerFragment extends DialogFragment {
                         null)
                 .create();
     }
+
+
+
 }

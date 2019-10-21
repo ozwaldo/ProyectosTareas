@@ -130,8 +130,8 @@ public class TareaListFragment extends Fragment {
             Log.d("DEPURAR",mTarea.getTitulo());
             mTituloTareaView.setText(mTarea.getTitulo());
             mTareaEntregada.setChecked(tarea.isEntregada());
-            //mFechaTareaView.setText(mTarea.getFecha()
-            // .toString());
+            mFechaTareaView.setText(mTarea.getFecha()
+            .toString());
         }
     }
 

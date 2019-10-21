@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class TareaRep {
             //Date fecha = formatoFecha.parse("01-01-2019");
             //tarea.setFecha(fecha);
             tarea.setEntregada(i%2==0);
+            tarea.setFecha(new Date());
             Log.d("DEPURAR", "Add Tarea");
             mTareas.add(tarea);
         }
