@@ -30,6 +30,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <!-- TIME PICKER -->
+    <Button
+        android:id="@+id/hora_entrega_tarea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <CheckBox
         android:id="@+id/tarea_entregada"
         android:layout_width="match_parent"

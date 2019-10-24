@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,12 +27,11 @@ public class TareaRep {
 
             Tarea tarea = new Tarea();
             tarea.setTitulo("Tarea " + i);
-           // DateFormat formatoFecha = new
-           //         SimpleDateFormat("DD/MM/YYYY");
-            //Date fecha = formatoFecha.parse("01-01-2019");
-            //tarea.setFecha(fecha);
+            SimpleDateFormat simpleDateFormat =
+                    new SimpleDateFormat("dd-MM-yyyy");
+            Date date = simpleDateFormat.parse("01-08-1999");
             tarea.setEntregada(i%2==0);
-            tarea.setFecha(new Date());
+            tarea.setFecha(date);
             Log.d("DEPURAR", "Add Tarea");
             mTareas.add(tarea);
         }

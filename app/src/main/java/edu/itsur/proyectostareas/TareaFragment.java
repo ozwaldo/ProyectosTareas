@@ -1,6 +1,17 @@
 package edu.itsur.proyectostareas;
 
+
+// Ejercicio 1. Actualizar checkbox en recyclerview y mainactivity.
+// Ejercicio 2. Cambiar formato de fecha y mostrarla en button.
+// 21/10/2019
+
+// Práctica Hora: Agregar un botón para almacenar la hora de entrega de la tarea mediante un Time Picker.
+// 30/10/2019
+
+
 //import android.support.v4.app.Fragment;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,12 +29,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.UUID;
 
 public class TareaFragment extends Fragment {
 
     private static final String ARG_TAREA_ID = "tarea_id";
     private static final String DIALOG_FECHA = "DialogFecha";
+
+    private static final int REQUEST_FECHA = 0;
 
     private Tarea mTarea;
     private EditText mTituloTarea;
@@ -72,6 +86,8 @@ public class TareaFragment extends Fragment {
 
         mTituloTarea.setText(mTarea.getTitulo());
 
+
+
         mTituloTarea.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
@@ -92,8 +108,8 @@ public class TareaFragment extends Fragment {
         });
         mFechaBoton = (Button)
                 view.findViewById(R.id.fecha_entrega_tarea);
-       // mFechaBoton.setText(mTarea.getFecha().toString());
-        mFechaBoton.setText("Fecha de Entrega");
+        mFechaBoton.setText(mTarea.getFechaString());
+        //mFechaBoton.setText("Fecha de Entrega");
         //mFechaBoton.setEnabled(false);
 
         mFechaBoton.setOnClickListener(
@@ -102,8 +118,17 @@ public class TareaFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager manager =
                         getFragmentManager();
+                /*DatePickerFragment dialog =
+                        new DatePickerFragment();*/
                 DatePickerFragment dialog =
-                        new DatePickerFragment();
+                        DatePickerFragment
+                                .newInstance(
+                                        mTarea.getFecha());
+
+                dialog.setTargetFragment(
+                        TareaFragment.this,
+                        REQUEST_FECHA);
+
                 dialog.show(manager, DIALOG_FECHA);
             }
         });
@@ -120,5 +145,18 @@ public class TareaFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK){return;}
+        if (requestCode == REQUEST_FECHA){
+            Date fecha = (Date) data.
+                    getSerializableExtra(
+                            DatePickerFragment.EXTRA_FECHA);
+            mTarea.setFecha(fecha);
+            mFechaBoton.setText(mTarea.getFechaString());
+        }
     }
 }

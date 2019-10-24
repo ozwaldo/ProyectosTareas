@@ -1,12 +1,15 @@
 package edu.itsur.proyectostareas;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Tarea {
     private UUID mId;
     private String mTitulo;
     private Date mFecha;
+    private Date mHora; //Tarea
     private boolean mEntregada;
 
     public Tarea() {
@@ -48,6 +51,13 @@ public class Tarea {
 
     public void setEntregada(boolean entregada) {
         this.mEntregada = entregada;
+    }
+
+    public String getFechaString() {
+        Locale esLocale = new Locale("es", "MX");
+        return new SimpleDateFormat(
+                "dd MMMM yyyy ", esLocale)
+                .format(mFecha);
     }
 }
 
