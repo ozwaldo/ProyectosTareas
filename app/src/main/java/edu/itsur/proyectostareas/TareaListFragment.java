@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -49,6 +51,12 @@ public class TareaListFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         try {
@@ -58,6 +66,11 @@ public class TareaListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_tarea_list, menu);
+    }
 
     private void updateIU() throws ParseException {
         TareaRep tareaRep = TareaRep.get(getActivity());
@@ -164,4 +177,6 @@ public class TareaListFragment extends Fragment {
             return mTareas.size();
         }
     }
+
+
 }

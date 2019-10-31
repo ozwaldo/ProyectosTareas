@@ -5,4 +5,5 @@
     <string name="tarea_detalle_etiqueta">Descripción:</string>
     <string name="tarea_entregada_etiqueta">Entregada</string>
     <string name="date_picker_titulo">Fecha de Entrega</string>
+    <string name="tarea_nueva">Tarea Nueva</string>
 </resources>

@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
 <!--        <activity android:name=".MainActivity">-->
-        <activity android:name=".TareaPagerActivity">
+        <activity
+            android:name=".TareaPagerActivity"
+            android:parentActivityName=".TareaListActivity">
         </activity>
         <!--<activity android:name=".MainActivity">
             <intent-filter>
