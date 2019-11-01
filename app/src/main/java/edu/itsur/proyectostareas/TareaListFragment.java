@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 // android.support.v4.app.Fragment;
@@ -70,6 +72,27 @@ public class TareaListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_tarea_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tarea_nueva:
+                Tarea tarea = new Tarea(new Date());
+                try {
+                    TareaRep.get(getActivity()).addTarea(tarea);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Intent intent =
+                        TareaPagerActivity.newIntent(
+                                getActivity(), tarea.getId());
+                startActivity(intent);
+                return true;
+             default:
+                 return super.onOptionsItemSelected(item);
+        }
+
     }
 
     private void updateIU() throws ParseException {

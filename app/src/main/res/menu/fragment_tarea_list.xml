@@ -7,5 +7,5 @@
         android:id="@+id/tarea_nueva"
         android:icon="@mipmap/ic_menu_add"
         android:title="@string/tarea_nueva"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="ifRoom|withText" />
 </menu>

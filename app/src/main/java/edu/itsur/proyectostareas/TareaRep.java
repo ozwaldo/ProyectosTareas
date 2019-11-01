@@ -1,12 +1,9 @@
 package edu.itsur.proyectostareas;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +20,7 @@ public class TareaRep {
     }
     private TareaRep(Context context) throws ParseException {
         mTareas = new ArrayList<>();
-        for (int i = 0; i<100; i++) {
-
+        /*for (int i = 0; i<100; i++) {
             Tarea tarea = new Tarea();
             tarea.setTitulo("Tarea " + i);
             SimpleDateFormat simpleDateFormat =
@@ -34,8 +30,13 @@ public class TareaRep {
             tarea.setFecha(date);
             Log.d("DEPURAR", "Add Tarea");
             mTareas.add(tarea);
-        }
+        }*/
     }
+
+    public void addTarea(Tarea tarea) {
+         mTareas.add(tarea);
+    }
+
     public List<Tarea> getTareas() {
         return mTareas;
     }
