@@ -12,8 +12,12 @@ public class Tarea {
     private Date mHora; //Tarea
     private boolean mEntregada;
 
-    public Tarea() {
-        this.mId = UUID.randomUUID();
+//    public Tarea() {
+//        this.mId = UUID.randomUUID();
+//    }
+
+    public Tarea(UUID id) {
+        mId = id;
     }
 
     public Tarea(Date fecha) {
