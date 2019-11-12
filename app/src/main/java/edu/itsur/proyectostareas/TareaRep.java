@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import edu.itsur.proyectostareas.database.TareaBaseHelper;
+import edu.itsur.proyectostareas.database.TareaCursorWrapper;
 
 import static edu.itsur.proyectostareas.database.TareaDbSchema.TareaTabla;
 
@@ -67,8 +68,10 @@ public class TareaRep {
                 new String[]{uuidString});
     }
 
-    private Cursor queryTareas(String where,
-                               String[] argWhere) {
+    /*private Cursor queryTareas(String where,
+                               String[] argWhere) {*/
+    private TareaCursorWrapper queryTareas(String where,
+                                     String[] argWhere){
         // SELECT columnas FROM tabla WHERE comparacion GROUP BY .. ORDER BY ...
         Cursor cursor = mDatabase.query(
                 TareaTabla.NOMBRE,
@@ -79,12 +82,26 @@ public class TareaRep {
                 null,
                 null
         );
-        return cursor;
+
+        return new TareaCursorWrapper(cursor);
     }
 
     public List<Tarea> getTareas() {
         //return mTareas;
-        return new ArrayList<>();
+        List<Tarea> tareas = new ArrayList<>();
+        TareaCursorWrapper cursor = queryTareas(null,
+                null);
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                tareas.add(cursor.getTarea());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return tareas;
     }
     public Tarea getTarea(UUID id) {
 //        for (Tarea tarea : mTareas){
@@ -92,7 +109,21 @@ public class TareaRep {
 //                return tarea;
 //            }
 //        }
-        return null;
+        TareaCursorWrapper cursor = queryTareas(
+
+                TareaTabla.Cols.UUID + "= ?",
+                new String[]{id.toString()}
+        );
+        try {
+            if (cursor.getCount() == 0){
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getTarea();
+        } finally {
+            cursor.close();
+        }
+        // return null;
     }
 
     private static ContentValues

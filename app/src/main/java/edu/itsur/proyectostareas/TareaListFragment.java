@@ -2,7 +2,6 @@ package edu.itsur.proyectostareas;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -103,6 +102,7 @@ public class TareaListFragment extends Fragment {
             mAdapter = new TareaAdapter(tareas);
             mTareasRecyclerView.setAdapter(mAdapter);
         } else {
+            mAdapter.setTareas(tareas);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -163,7 +163,7 @@ public class TareaListFragment extends Fragment {
 
         public void bind(Tarea tarea) {
             mTarea = tarea;
-            Log.d("DEPURAR",mTarea.getTitulo());
+            //Log.d("DEPURAR",mTarea.getTitulo());
             mTituloTareaView.setText(mTarea.getTitulo());
             mTareaEntregada.setChecked(tarea.isEntregada());
             mFechaTareaView.setText(mTarea.getFechaString());
@@ -198,6 +198,11 @@ public class TareaListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mTareas.size();
+        }
+
+        public void setTareas(
+                List<Tarea> tareas) {
+            mTareas = tareas;
         }
     }
 

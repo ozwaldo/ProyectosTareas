@@ -7,6 +7,9 @@ package edu.itsur.proyectostareas;
 
 // Práctica Hora: Agregar un botón para almacenar la hora de entrega de la tarea mediante un Time Picker.
 // 30/10/2019
+// Practica Eliminar: Eliminar una tarea de la
+//                    base de datos y agregar hora
+// 14/11/2019
 
 
 //import android.support.v4.app.Fragment;
@@ -147,6 +150,16 @@ public class TareaFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            TareaRep.get(getActivity()).
+                    updateTarea(mTarea);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
