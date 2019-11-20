@@ -63,6 +63,11 @@ public class Tarea {
                 "dd MMMM yyyy ", esLocale)
                 .format(mFecha);
     }
+
+    public String getFotoNombre() {
+        // IMG_UUID.jpg
+        return "IMG_" + getId().toString() + ".jpg";
+    }
 }
 
 

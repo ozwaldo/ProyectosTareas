@@ -13,9 +13,15 @@ package edu.itsur.proyectostareas;
 
 
 //import android.support.v4.app.Fragment;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,14 +31,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class TareaFragment extends Fragment {
@@ -41,12 +52,19 @@ public class TareaFragment extends Fragment {
     private static final String DIALOG_FECHA = "DialogFecha";
 
     private static final int REQUEST_FECHA = 0;
-
+        //****************
+    private static final int REQUEST_FOTO = 2;
+        //****************
     private Tarea mTarea;
     private EditText mTituloTarea;
     private Button mFechaBoton;
     private CheckBox mTareaEntregada;
+    // *******************************
+    private ImageButton mFotoBoton;
+    private ImageView mFotoView;
 
+    private File mFotoFile;
+    // *******************************
     public static TareaFragment newInstance(UUID tareaId){
         Bundle args = new Bundle();
         args.putSerializable(ARG_TAREA_ID, tareaId);
@@ -73,6 +91,8 @@ public class TareaFragment extends Fragment {
             mTarea =
                     TareaRep.get(getActivity())
                             .getTarea(tareaId);
+            //***
+            mFotoFile = TareaRep.get(getActivity()).getFotoFile(mTarea);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -147,6 +167,53 @@ public class TareaFragment extends Fragment {
             }
         });
 
+
+        // ****************************************************
+
+        mFotoBoton = (ImageButton) view.findViewById(R.id.tarea_camara);
+        final Intent capturarFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        boolean tomarFoto =
+                mFotoFile != null &&
+                        capturarFoto.resolveActivity(packageManager) != null;
+
+        mFotoBoton.setEnabled(tomarFoto);
+
+        if (tomarFoto) {
+
+            Uri uri = FileProvider.getUriForFile(
+                    getActivity(),
+                    "edu.itsur.proyectostareas.fileprovider",
+                    mFotoFile);
+            //Uri uri = Uri.fromFile(mFotoFile);
+            capturarFoto.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+
+            List<ResolveInfo> camaraAcitivies = getActivity()
+                    .getPackageManager().queryIntentActivities(
+                            capturarFoto, PackageManager.MATCH_DEFAULT_ONLY
+                    );
+
+            for(ResolveInfo activity : camaraAcitivies) {
+                getActivity().grantUriPermission(
+                        activity.activityInfo.packageName,
+                        uri,Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+        }
+
+        mFotoBoton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(capturarFoto,REQUEST_FOTO);
+            }
+        });
+
+        mFotoView = (ImageView) view.findViewById(R.id.tarea_foto);
+
+        updateFotoView();
+
+        //*****************************************************
         return view;
     }
 
@@ -170,6 +237,27 @@ public class TareaFragment extends Fragment {
                             DatePickerFragment.EXTRA_FECHA);
             mTarea.setFecha(fecha);
             mFechaBoton.setText(mTarea.getFechaString());
+        }else if (requestCode == REQUEST_FOTO) {
+
+            Uri uri = FileProvider.getUriForFile(getActivity(),
+                    "edu.itsur.proyectostareas.fileprovider",
+                    mFotoFile);
+
+            getActivity().revokeUriPermission(uri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            updateFotoView();
+        }
+    }
+
+    private void updateFotoView(){
+        if (mFotoFile == null || !mFotoFile.exists()) {
+            mFotoView.setImageDrawable(null);
+        } else {
+            Bitmap bitmap = FotoUtils.getScaleBitmap(
+                    mFotoFile.getPath(), getActivity());
+
+            mFotoView.setImageBitmap(bitmap);
         }
     }
 }
